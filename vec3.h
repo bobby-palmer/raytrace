@@ -47,6 +47,7 @@ class vec3 {
     }
 }; // vec3()
 
+using point3 = vec3;
 // Vector Utility Functions
 
 inline std::ostream& operator<<(std::ostream& out, const vec3& p) {
