@@ -7,9 +7,9 @@
 
 class camera {
   public:
-  double aspect_ratio = 1.0; // width / height
-  int    image_width =  100;
-
+  double aspect_ratio      = 1.0; // width / height
+  int    image_width       = 100;
+  int    samples_per_pixel = 10;
 
   void render(hittable& world) {
     initialize();
@@ -18,12 +18,12 @@ class camera {
     for (int j = 0; j < image_height; ++j) {
       std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
       for (int i = 0; i < image_width; ++i) {
-        auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-        auto ray_direction = pixel_center - camera_center;
-        ray r(camera_center, ray_direction);
-
-        color pixel_color = ray_color(r, world);
-        write_color(std::cout, pixel_color);
+        color pixel_color( 0, 0, 0);
+        for (int i = 0; i < samples_per_pixel; ++i) {
+          ray r = get_ray(i, j);
+          pixel_color += ray_color(r, world);
+        }
+        write_color(std::cout, pixel_color, samples_per_pixel);
       }
     }
 
@@ -71,5 +71,9 @@ class camera {
     vec3 unit_direction = unit_vector(r.direction());
     auto a = 0.5*(unit_direction.y() + 1.0);
     return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+  }
+
+  ray get_ray(int i,int j) {
+    return ray(); 
   }
 }; // camera
