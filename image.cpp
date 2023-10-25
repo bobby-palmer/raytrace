@@ -8,11 +8,6 @@
 
 int main() {
 
-  // Image diamensions
-
-  auto aspect_ratio = 16.0 / 9.0;
-  int image_width = 400;
-
   // World objects
 
   hittable_list world;
@@ -23,8 +18,9 @@ int main() {
 
   camera cam;
 
-  cam.image_width = image_width;
-  cam.aspect_ratio = aspect_ratio;
+  cam.image_width = 400;
+  cam.aspect_ratio = 16.0 / 9.0;
+  cam.samples_per_pixel = 100;
 
   cam.render(world);
 }

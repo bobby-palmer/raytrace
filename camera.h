@@ -19,7 +19,7 @@ class camera {
       std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
       for (int i = 0; i < image_width; ++i) {
         color pixel_color( 0, 0, 0);
-        for (int i = 0; i < samples_per_pixel; ++i) {
+        for (int samples = 0; samples < samples_per_pixel; ++samples) {
           ray r = get_ray(i, j);
           pixel_color += ray_color(r, world);
         }
@@ -74,6 +74,18 @@ class camera {
   }
 
   ray get_ray(int i,int j) {
-    return ray(); 
+    auto pixel_center = pixel00_loc + (pixel_delta_u * i) + (pixel_delta_v * j);
+    auto pixel_sample = pixel_center + pixel_sample_square();
+
+    auto direction = pixel_sample - camera_center;
+
+    return ray(camera_center, direction);
+  }
+
+  vec3 pixel_sample_square() {
+    auto px = -0.5 + random_double();
+    auto py = -0.5 + random_double();
+
+    return (px * pixel_delta_u) + (py * pixel_delta_v);
   }
 }; // camera
