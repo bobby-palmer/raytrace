@@ -17,7 +17,7 @@ class lambertian : public material {
 public:
   lambertian(const color& a) : albedo(a) {}
 
-  bool scatter(const ray& ray_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
+  virtual bool scatter(const ray& ray_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
     auto scatter_direction = rec.normal + random_unit_vector();
 
     // catch degenerate scatter direction
@@ -37,7 +37,7 @@ class metal : public material {
 public:
   metal(const color& a) : albedo(a){}
 
-  bool scatter(const ray& ray_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
+  virtual bool scatter(const ray& ray_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
     vec3 reflected = reflect(unit_vector(ray_in.direction()), rec.normal);
     scattered = ray(rec.p, reflected);
     attenuation = albedo;
